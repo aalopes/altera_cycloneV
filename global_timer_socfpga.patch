@@ -1,0 +1,27 @@
+# This is a patch for registering the ARM global timer
+# in the DTS for Altera SOCFPGAs based boards (e.g. Cyclone V, Arria V).
+# This is needed, for example, for Xenomai to function properly
+# It has been submited as a kernel patch, but I do not believe it has
+# made it upstream ...
+#
+# Author: Alexandre Lopes 
+# Date:   12.06.2015
+
+diff -rupN a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+--- a/arch/arm/boot/dts/socfpga.dtsi	2015-06-12 10:08:48.978408603 +0200
++++ b/arch/arm/boot/dts/socfpga.dtsi	2015-06-12 10:09:59.702408944 +0200
+@@ -737,6 +737,14 @@
+ 			clocks = <&mpu_periph_clk>;
+ 		};
+ 
++        /* Global Timer */
++        timer@fffec200 {
++            compatible = "arm,cortex-a9-global-timer";
++            reg = <0xfffec200 0x20>;
++            interrupts = <1 11 0xf04>;
++            clocks = <&mpu_periph_clk>;
++        };
++
+ 		timer0: timer0@ffc08000 {
+ 			compatible = "snps,dw-apb-timer";
+ 			interrupts = <0 167 4>;
